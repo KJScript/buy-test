@@ -1,3 +1,3 @@
-# Boilerplate Meteor Project
+# buy-test app
 
-this includes a basic react and auth setup.
+Short application that features the Shopify buy sdk
