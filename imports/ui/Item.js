@@ -1,16 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { shopClient, generateSelectors } from './Shop';
+import { shopClient, generateSelectors, addToCart, viewCart } from './Shop';
 
-export default class ItemSelector extends React.Component {
+export default class Item extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       title: '',
       image: '',
-      link: 'default',
+      price: '',
       productId: '10558455949',
-      variantSelectors: null
+      variantSelectors: null,
+      variant: ''
     }
   }
   componentWillMount() {
@@ -21,34 +22,39 @@ export default class ItemSelector extends React.Component {
         title: product.title,
         image: product.selectedVariantImage.src,
         link: product.selectedVariant.checkoutUrl,
-        variantSelectors
+        variantSelectors,
+        price: product.selectedVariant.price,
+        variant
       });
-      console.log(product.selectedVariant.checkoutUrl);
     });
-    console.log(this.state.link);
   }
   componentDidMount() {
-    document.getElementById('sel').innerHTML = this.state.variantSelectors;
+    let cart;
+    shopClient.createCart().then(function (newCart) {
+      cart = newCart;
+    });
+    this.setState({cart})
   }
+  handleClick(e) {
+    e.preventDefault();
+
+    addToCart(this.state.variant, 1);
+  }
+
   render() {
     return (
       <div className="item">
-        <img
-          src={this.props.image}
-          width="200rem"
-          />
         <p className="top-space">{this.props.title}</p>
         <p><strong>{this.props.cost}</strong></p>
-        <img src={this.state.image}/>
-        <p>{this.state.link}</p>
+        <img className="item__image" src={this.state.image}/>
         <h1>{this.state.title}</h1>
-        <div id="sel"></div>
-        <a href={this.state.link}>Buy Now!</a>
+        <p>{this.state.price}</p>
+          <button onClick={this.handleClick.bind(this)}>ADD TO CART</button>
       </div>
     );
   }
 }
 
-ItemSelector.propTypes = {
+Item.propTypes = {
   productId: PropTypes.string.isRequired
 }

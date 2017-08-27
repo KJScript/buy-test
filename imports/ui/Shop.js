@@ -16,6 +16,33 @@ export function generateSelectors(product) {
   return elements;
 }
 
+shopClient.fetchAllProducts()
+.then(function (products) {
+  console.log(products);
+})
+.catch(function () {
+  console.log('Request failed');
+});
+
+var cart;
+shopClient.createCart().then(function (newCart) {
+  cart = newCart;
+});
+
+export function addToCart(productVariant, quantity) {
+  cart.createLineItemsFromVariants({variant: productVariant, quantity}).then(function (cart) {
+    console.log(productVariant)
+    console.log(quantity)
+    console.log(cart)
+});
+
+export function viewCart() {
+  document.location.href = cart.checkoutUrl;
+}
+
+}
+
+
 // shopClient.fetchProduct('10558455949').then(product => {
 //   const html =
 //     `<img src="${product.selectedVariantImage.src}">` +
