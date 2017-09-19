@@ -37,19 +37,19 @@ export default class Item extends React.Component {
   }
   handleClick(e) {
     e.preventDefault();
-
+    //document.getElementById('tester').className= 'color-change top-space'
     addToCart(this.state.variant, 1);
   }
 
   render() {
     return (
       <div className="item">
-        <p className="top-space">{this.props.title}</p>
+        <p id='tester' className="top-space">{this.props.title}</p>
         <p><strong>{this.props.cost}</strong></p>
         <img className="item__image" src={this.state.image}/>
         <h1>{this.state.title}</h1>
         <p>{this.state.price}</p>
-          <button onClick={this.handleClick.bind(this)}>ADD TO CART</button>
+          <button className="product__buy" onClick={this.handleClick.bind(this)}>ADD TO CART</button>
       </div>
     );
   }
